@@ -12,6 +12,7 @@ public class PlayManager {
 
     Mino currentMino;
     Mino nextMino;
+    Ghost_Piece ghostPiece;
     final int MINO_START_X;
     final int MINO_START_Y;
     final int NEXT_MINO_X;
@@ -50,6 +51,8 @@ public class PlayManager {
         currentMino.setXY(MINO_START_X, MINO_START_Y);
         nextMino = pickMino();
         nextMino.setXY(NEXT_MINO_X, NEXT_MINO_Y);
+        
+        ghostPiece = new Ghost_Piece();
     }
 
     private Mino pickMino() {
@@ -98,6 +101,8 @@ public class PlayManager {
             }
             autoDropCounter = 0;
         }
+        
+        ghostPiece.updateInfo(currentMino);
     }
 
     private boolean checkLeftCollision() {
@@ -229,6 +234,9 @@ public class PlayManager {
 
         // draw placed block
         for(Block b : staticBlocks) b.draw(g2);
+
+
+        if(ghostPiece != null && currentMino != null) ghostPiece.draw(g2);
 
         // draw curr mino and next mino
         if(currentMino != null) currentMino.draw(g2);
