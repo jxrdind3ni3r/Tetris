@@ -1,7 +1,7 @@
 package main;
 import javax.swing.*;
 import java.awt.*;
-    
+
 public class GamePanel extends JPanel implements Runnable{
     //resolution
     public static final int WIDTH = 1280;
@@ -21,6 +21,23 @@ public class GamePanel extends JPanel implements Runnable{
         this.setFocusable(true);
 
         pm = new PlayManager();
+
+        this.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent e) {
+                if(pm.gameOver && pm.restartBtn != null
+                   && pm.restartBtn.contains(e.getPoint())) {
+                    pm.reset();
+                }
+                if(pm.leaderboardBtn != null
+                   && pm.leaderboardBtn.contains(e.getPoint())) {
+                    pm.showLeaderboard = !pm.showLeaderboard;
+                }
+                if(pm.leaderboardBackBtn != null
+                   && pm.leaderboardBackBtn.contains(e.getPoint())) {
+                    pm.showLeaderboard = false;
+                }
+            }
+        });
     }
 
     public void lauchGame(){
