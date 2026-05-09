@@ -2,7 +2,6 @@ package main;
 import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.List;
 import mino.*;
 
 public class PlayManager {
@@ -28,12 +27,7 @@ public class PlayManager {
 
     int leftKeyCounter = 0;
     int rightKeyCounter = 0;
-    
-    boolean showLeaderboard = false;
-    java.awt.Rectangle restartBtn;
-    java.awt.Rectangle leaderboardBtn;
-    java.awt.Rectangle leaderboardBackBtn;
-    
+
     Random random = new Random();
 
     public PlayManager() {
@@ -56,15 +50,9 @@ public class PlayManager {
     }
 
     private Mino pickMino() {
-        switch(random.nextInt(7)) {
-            case 0: return new Mino_L1();
-            case 1: return new Mino_L2();
-            case 2: return new Mino_bar();
-            case 3: return new Mino_Plus();
-            case 4: return new Mino_s();
-            case 5: return new Mino_z1();
-            default: return new Mino_z2();
-        }
+        int i = random.nextInt(7);
+        Mino.MinoType type = Mino.MinoType.values()[i];
+        return new Mino(type);
     }
 
     public void update() {
@@ -145,11 +133,7 @@ public class PlayManager {
         // Kiểm tra game over
         for(Block b : currentMino.b)
             for(Block sb : staticBlocks)
-                if(b.x == sb.x && b.y == sb.y) {
-                    gameOver = true;
-                    ScoreManager.saveScore(score);
-                    return;
-                }
+                if(b.x == sb.x && b.y == sb.y) { gameOver = true; return; }
     }
 
     private void checkLine() {
@@ -180,17 +164,6 @@ public class PlayManager {
         autoDropInterval = Math.max(5, 60 - (level - 1) * 5);
     }
 
-    public void reset() {
-        staticBlocks.clear();
-        score = 0; level = 1; lines = 0;
-        autoDropInterval = 60;
-        gameOver = false;
-        currentMino = pickMino();
-        currentMino.setXY(MINO_START_X, MINO_START_Y);
-        nextMino = pickMino();
-        nextMino.setXY(NEXT_MINO_X, NEXT_MINO_Y);
-    }
-
     public void draw(Graphics2D g2) {
         // Khung play area
         g2.setColor(Color.WHITE);
@@ -214,18 +187,7 @@ public class PlayManager {
         g2.drawString("LEVEL: " + level, infoX, top_y + 140);
         g2.drawString("LINES: " + lines, infoX, top_y + 170);
 
-        // Nút LEADERBOARD
-        int lbX = right_x + 110;
-        int lbY = top_y + 200;
-        leaderboardBtn = new java.awt.Rectangle(lbX, lbY, 160, 40);
-        g2.setColor(Color.YELLOW);
-        g2.fillRect(lbX, lbY, 160, 40);
-        g2.setColor(Color.BLACK);
-        g2.setFont(new Font("Arial", Font.BOLD, 18));
-        g2.drawString("LEADERBOARD", lbX + 5, lbY + 27);
-
         // button guide
-        g2.setColor(Color.WHITE);
         g2.setFont(new Font("Arial", Font.PLAIN, 16));
         int hx = left_x - 180;
         g2.drawString("← → Di chuyển", hx, top_y + 60);
@@ -242,6 +204,8 @@ public class PlayManager {
         if(currentMino != null) currentMino.draw(g2);
         if(nextMino != null) nextMino.draw(g2);
 
+
+
         // game end when block reach out of rec
         if(gameOver) {
             g2.setColor(new Color(0, 0, 0, 160));
@@ -253,39 +217,6 @@ public class PlayManager {
             g2.setColor(Color.WHITE);
             g2.setFont(new Font("Arial", Font.PLAIN, 22));
             g2.drawString("Score: " + score, left_x + 95, top_y + HEIGHT/2 + 80);
-
-            int btnX = left_x + 80;
-            int btnY = top_y + HEIGHT/2 + 100;
-            restartBtn = new java.awt.Rectangle(btnX, btnY, 200, 50);
-            g2.setColor(Color.WHITE);
-            g2.fillRect(btnX, btnY, 200, 50);
-            g2.setColor(Color.BLACK);
-            g2.setFont(new Font("Arial", Font.BOLD, 22));
-            g2.drawString("PLAY AGAIN", btnX + 18, btnY + 33);
-        }
-
-        if(showLeaderboard) {
-            g2.setColor(new Color(0, 0, 0, 200));
-            g2.fillRect(left_x, top_y, WIDTH, HEIGHT);
-            g2.setColor(Color.YELLOW);
-            g2.setFont(new Font("Arial", Font.BOLD, 32));
-            g2.drawString("LEADERBOARD", left_x + 55, top_y + 80);
-        
-            List<Integer> tops = ScoreManager.loadScores();
-            for(int i = 0; i < tops.size(); i++) {
-                g2.setColor(Color.WHITE);
-                g2.setFont(new Font("Arial", Font.PLAIN, 24));
-                g2.drawString((i+1) + ".  " + tops.get(i), left_x + 110, top_y + 150 + i * 45);
-            }
-        
-            int btnX = left_x + 80;
-            int btnY = top_y + HEIGHT - 80;
-            leaderboardBackBtn = new java.awt.Rectangle(btnX, btnY, 200, 50);
-            g2.setColor(Color.WHITE);
-            g2.fillRect(btnX, btnY, 200, 50);
-            g2.setColor(Color.BLACK);
-            g2.setFont(new Font("Arial", Font.BOLD, 22));
-            g2.drawString("BACK", btnX + 65, btnY + 33);
         }
     }
 }

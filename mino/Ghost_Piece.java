@@ -2,11 +2,14 @@ package mino;
 import java.awt.Color;
 import main.PlayManager;
 
-public class Ghost_Piece extends Mino {
-    public Ghost_Piece() { 
-        create(new Color(255, 255, 255, 100));
-    }
+public class Ghost_Piece {
+    public Block[] b = new Block[4];
 
+    public Ghost_Piece() { 
+        Color c = new Color(255, 255, 255, 100);
+        b[0] = new Block(c); b[1] = new Block(c);
+        b[2] = new Block(c); b[3] = new Block(c);
+    }
     public void updateInfo(Mino currentMino) {
         for (int i = 0; i < 4; i++) {
             b[i].x = currentMino.b[i].x;
@@ -36,5 +39,9 @@ public class Ghost_Piece extends Mino {
                 b[i].y += Block.SIZE;
             }
         }
+    }
+
+    public void draw(java.awt.Graphics2D g2) {
+        for(Block block : b) block.draw(g2);
     }
 }
