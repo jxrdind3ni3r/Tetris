@@ -67,6 +67,7 @@ public class PlayManager {
         // Di trái 
         if(GamePanel.keyH.leftPress) {
             leftKeyCounter++;
+            //first frame of pressing          after holding 12 frame move every 4 frame
             if(leftKeyCounter == 1 || (leftKeyCounter > 12 && leftKeyCounter % 4 == 0))
                 if(!checkLeftCollision()) currentMino.updateXY(0);
         } else { leftKeyCounter = 0; }
@@ -75,6 +76,7 @@ public class PlayManager {
         if(GamePanel.keyH.rightPress) {
             rightKeyCounter++;
             if(rightKeyCounter == 1 || (rightKeyCounter > 12 && rightKeyCounter % 4 == 0))
+                //check if there is a wall
                 if(!checkRightCollision()) currentMino.updateXY(1);
         } else { rightKeyCounter = 0; }
 
