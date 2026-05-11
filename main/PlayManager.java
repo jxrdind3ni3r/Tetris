@@ -136,7 +136,7 @@ public class PlayManager {
             for(Block sb : staticBlocks)
                 if(b.x == sb.x && b.y == sb.y) { gameOver = true; return; }
     }
-
+    //kiểm tra line 
     private void checkLine() {
         int columns = WIDTH / Block.SIZE; // = 12
         int linesCleared = 0;
