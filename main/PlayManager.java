@@ -92,9 +92,10 @@ public class PlayManager {
         
         ghostPiece.updateInfo(currentMino);
     }
-
+    //kiểm tra xem có ở rìa không 
     private boolean checkLeftCollision() {
         for(Block b : currentMino.b) {
+            //kiểểm tra xem có dính static block không
             if(b.x - Block.SIZE < left_x) return true;
             for(Block sb : staticBlocks)
                 if(b.y == sb.y && b.x - Block.SIZE == sb.x) return true;
