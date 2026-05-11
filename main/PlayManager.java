@@ -3,7 +3,7 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.Random;
 import mino.*;
-
+//khai báo playnager
 public class PlayManager {
     final int WIDTH = 360;
     final int HEIGHT = 600;
